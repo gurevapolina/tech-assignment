@@ -67,8 +67,9 @@ final class CountryViewPresenterImpl: CountryViewPresenter {
     }
 
     private func createAttributedString(additionalInfoKey: AdditionalInfoKey) -> NSAttributedString? {
+        guard let value = additionalInfoKey.valueTitle(country: country) else { return nil }
+
         let title = additionalInfoKey.title()
-        let value = additionalInfoKey.valueTitle(country: country)
         let resultText = "\(title): \(value)"
 
         guard
@@ -98,13 +99,11 @@ final class CountryViewPresenterImpl: CountryViewPresenter {
             countryView?.showImage(image: cachedImage)
             return
         }
-        imagesLoader.loadImage(url: country.flagImageURL) { [weak self] result in
-            guard let this = self else {
-                return
-            }
-            if case let .success(image) = result {
-                this.imagesCacheManager.setObject(image: image, key: this.country.imageCacheID)
-                this.countryView?.showImage(image: image)
+
+        Task {
+            if let image = try? await imagesLoader.loadImage(urlString: country.flagImageURL) {
+                imagesCacheManager.setObject(image: image, key: country.imageCacheID)
+                countryView?.showImage(image: image)
             }
         }
     }
@@ -122,7 +121,7 @@ extension AdditionalInfoKey {
         }
     }
 
-    fileprivate func valueTitle(country: Country) -> String {
+    fileprivate func valueTitle(country: Country) -> String? {
         switch self {
         case .officialName:
             return country.name.official
@@ -136,7 +135,7 @@ extension AdditionalInfoKey {
         case .currency:
             return country.countryCurrencies
                 .map { currency in
-                    var result = currency.name
+                    var result = currency.name 
                     if let symbol = currency.symbol {
                         result += " (\(symbol))"
                     }
@@ -145,16 +144,28 @@ extension AdditionalInfoKey {
                 .joined(separator: ",")
 
         case .area:
-            return "\(country.area)"
+            if let area = country.area {
+                return "\(area)"
+            } else {
+                return nil
+            }
 
         case .pupulation:
-            return "\(country.population)"
+            if let population = country.population {
+                return "\(population)"
+            } else {
+                return nil
+            }
         }
     }
 }
 
 extension Country {
     var imageCacheID: NSString {
-        return NSString(string: "\(name.common)_\(name.official)")
+        return NSString(
+            string: [name.common, name.official]
+                .compactMap({ $0 })
+                .joined(separator: "_")
+        )
     }
 }

@@ -3,7 +3,7 @@ import Foundation
 struct Country: Codable {
     struct CountryName: Codable {
         let common: String
-        let official: String
+        let official: String?
     }
     
     struct Currency: Codable {
@@ -11,13 +11,11 @@ struct Country: Codable {
         let symbol: String?
     }
     
-    let area: Float
-    let population: Int
+    let area: Float?
+    let population: Int?
     let name: CountryName
     let currencies: [String: Currency]?
     let capital: [String]?
-    let region: String?
-    let subregion: String?
     let languages: [String: String]?
-    let flags: [String: URL]?
+    let flags: [String: String]?
 }

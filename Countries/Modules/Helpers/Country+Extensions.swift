@@ -9,7 +9,7 @@ extension Country {
         return Array((languages ?? [:]).values)
     }
 
-    var flagImageURL: URL? {
+    var flagImageURL: String? {
         return flags?[Constants.pngFormat]
     }
 }

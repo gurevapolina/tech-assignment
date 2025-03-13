@@ -48,20 +48,17 @@ final class CountriesListPresenterImpl: CountriesListPresenter {
         countriesListView?.showLoadingVisible(true)
         countriesListView?.showErrorVisible(false)
 
-        countriesAPI.allCountries { [weak self] result in
-            guard let this = self else {
-                return
+        Task {
+            do {
+                let countries = try await countriesAPI.allCountries()
+                self.countries = countries.sorted(by: { $0.name.common < $1.name.common })
+                self.countriesListView?.showCountries(self.countries)
+            } catch {
+                self.countriesListView?.showErrorVisible(true)
             }
 
-            this.countriesListView?.showLoadingVisible(false)
-
-            switch result {
-            case .success(let countries):
-                this.countries = countries.sorted(by: { $0.name.common < $1.name.common })
-                this.countriesListView?.showCountries(this.countries)
-
-            case .failure:
-                this.countriesListView?.showErrorVisible(true)
+            await MainActor.run {
+                countriesListView?.showLoadingVisible(false)
             }
         }
     }

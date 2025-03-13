@@ -124,7 +124,6 @@
 				1E0F727927E707BE005E74E5 /* Model */,
 				1E0F728427E7242E005E74E5 /* Modules */,
 				1E0F727527E62A13005E74E5 /* Network services */,
-				1E0F728027E71E18005E74E5 /* Helpers */,
 				1E0F724527E620C8005E74E5 /* AppDelegate.swift */,
 				1E0F724727E620C8005E74E5 /* SceneDelegate.swift */,
 				1E0F724E27E620C9005E74E5 /* Assets.xcassets */,
@@ -158,13 +157,6 @@
 				1E0F727E27E70905005E74E5 /* CountryTableViewCell.swift */,
 			);
 			path = Cells;
-			sourceTree = "<group>";
-		};
-		1E0F728027E71E18005E74E5 /* Helpers */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Helpers;
 			sourceTree = "<group>";
 		};
 		1E0F728427E7242E005E74E5 /* Modules */ = {

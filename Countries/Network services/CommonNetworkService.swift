@@ -27,7 +27,7 @@ final class CommonNetworkService {
     }
 
     private func parseJSON<T>(_ jsonData: Data, modelClass: T.Type) -> T? where T: Decodable {
-        let result = try? JSONDecoder().decode(modelClass,from: jsonData)
+        let result = try? JSONDecoder().decode(modelClass, from: jsonData)
         return result
     }
 }

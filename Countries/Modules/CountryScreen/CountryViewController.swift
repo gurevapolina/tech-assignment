@@ -66,7 +66,7 @@ final class CountryViewController: UIViewController {
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
         stackView.spacing = Constants.stackViewSpacing
-        stackView.alignment = .center
+        stackView.alignment = .leading
         return stackView
     }
 
@@ -100,7 +100,8 @@ final class CountryViewController: UIViewController {
     fileprivate struct Constants {
         static let flagImageViewWidth: CGFloat = 200
         static let flagImageViewHeight: CGFloat = 150
-        static let flagImageViewCornerRadius: CGFloat = 40
+        static let flagImageViewCornerRadius: CGFloat = 16
+        static let flagImageViewBottomSpacing: CGFloat = 40
         static let stackViewTopSpacing: CGFloat = 24
         static let stackViewLeftSpacing: CGFloat = 24
         static let stackViewRightSpacing: CGFloat = 24
@@ -122,6 +123,7 @@ extension CountryViewController: CountryView {
 
         additionalInfoStackView.subviews.forEach({ $0.removeFromSuperview() })
         additionalInfoStackView.addArrangedSubview(flagImageView)
+        additionalInfoStackView.setCustomSpacing(Constants.flagImageViewBottomSpacing, after: flagImageView)
 
         presentable.additionalInfoStrings.forEach { text in
             let label = createLabel()
